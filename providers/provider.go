@@ -17,19 +17,16 @@ func List(cfg *config.Config) (providers []Provider, err error) {
 		return providers, err
 	}
 
-	for _, p := range cfg.Providers {
-		provider, _ := getProvider(backend, p)
-		providers = append(providers, provider)
-	}
-	return
-}
-
-func getProvider(backend backends.Backend, provider string) (p Provider, err error) {
-	switch provider {
-	case "ovh":
-		p = &OVH{
-			Backend: backend,
+	var p Provider
+	for _, provider := range cfg.Providers {
+		switch provider {
+		case "ovh":
+			p = &OVH{
+				Backend:   backend,
+				InputPath: cfg.Provider.InputPath,
+			}
 		}
+		providers = append(providers, p)
 	}
 	return
 }

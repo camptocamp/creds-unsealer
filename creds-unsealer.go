@@ -24,6 +24,9 @@ func main() {
 	providers, _ := providers.List(cfg)
 
 	for _, p := range providers {
-		p.Unseal()
+		err := p.Unseal()
+		if err != nil {
+			log.Errorf("failed to unseal: %s", err)
+		}
 	}
 }

@@ -17,6 +17,10 @@ type Config struct {
 	Pass      struct {
 		Path string `long:"pass-path" description:"Path to password-store." env:"CREDS_PASS_PATH" default:"$HOME/.password-store"`
 	} `group:"Pass backend options"`
+
+	Provider struct {
+		InputPath string `long:"provider-input-path" description:"Provider input path"`
+	} `group:"Provider options"`
 }
 
 // LoadConfig loads the config from flags & environment
