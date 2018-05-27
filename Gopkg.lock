@@ -34,9 +34,15 @@
   revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
   version = "v2.2.1"
 
+[[projects]]
+  branch = "master"
+  name = "honnef.co/go/augeas"
+  packages = ["."]
+  revision = "ca62e35ed6b86f1959cee0860aeb9ce94368aaf0"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b23150c0441e722ae7e2da9ebe7609c547b5a46be095d920b09a60fd11a29d6a"
+  inputs-digest = "cdb2c9cfb550e51d9e6c91bf5fb1f2878bdd3375b8b2aa2887c1649194b236e0"
   solver-name = "gps-cdcl"
   solver-version = 1

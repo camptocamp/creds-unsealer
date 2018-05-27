@@ -33,10 +33,13 @@ func (p *Pass) GetCredentials(inputPath string) (credentials interface{}, err er
 		return nil, fmt.Errorf("failed to decrypt secret: %s", err)
 	}
 
-	err = yaml.Unmarshal(secret, &credentials)
+	var c map[string]interface{}
+
+	err = yaml.Unmarshal(secret, &c)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal secret: %s", err)
 	}
+	credentials = &c
 	return
 }
 

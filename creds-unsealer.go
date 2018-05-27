@@ -24,6 +24,7 @@ func main() {
 	providers, _ := providers.List(cfg)
 
 	for _, p := range providers {
+		log.Infof("Using provider %s", p.GetName())
 		err := p.Unseal()
 		if err != nil {
 			log.Errorf("failed to unseal: %s", err)
