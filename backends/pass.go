@@ -29,7 +29,26 @@ func (p *Pass) GetName() string {
 	return "Pass"
 }
 
-func (p *Pass) ListCredentials(inputPath string) (Credentials []string, err error) {
+func (p *Pass) ListSecrets(inputPath string) (secrets []string, err error) {
+	act, err := action.New(context.Background(), gpConfig.Load(), semver.Version{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to create gopass action: %s", err)
+	}
+	rootTree, err := act.Store.Tree(context.Background())
+	if err != nil {
+		return nil, fmt.Errorf("failed to retrieve gopass root tree: %s", err)
+	}
+	t, err := rootTree.FindFolder(inputPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to retrieve gopass tree: %s", err)
+	}
+
+	l := t.List(1)
+	secrets = make([]string, len(l)-1)
+	for _, secret := range l {
+		s := strings.Split(secret, "/")
+		secrets = append(secrets, string(s[1]))
+	}
 	return
 }
 

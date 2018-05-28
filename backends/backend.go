@@ -8,7 +8,7 @@ import (
 
 type Backend interface {
 	GetName() string
-	ListCredentials(string) ([]string, error)
+	ListSecrets(string) ([]string, error)
 	GetSecret(string, interface{}) error
 }
 
