@@ -8,7 +8,8 @@ import (
 
 type Backend interface {
 	GetName() string
-	GetCredentials(string) (interface{}, error)
+	ListCredentials(string) ([]string, error)
+	GetSecret(string, interface{}) error
 }
 
 func GetBackend(c *config.Config) (b Backend, err error) {

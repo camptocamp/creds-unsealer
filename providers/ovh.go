@@ -1,14 +1,12 @@
 package providers
 
 import (
-	"encoding/json"
 	"fmt"
 	"os"
-	"strings"
-
-	"honnef.co/go/augeas"
 
 	"github.com/camptocamp/creds-unsealer/backends"
+	"github.com/raphink/narcissus"
+	"honnef.co/go/augeas"
 )
 
 type OVH struct {
@@ -18,9 +16,15 @@ type OVH struct {
 }
 
 type OVHConfig struct {
-	ApplicationKey    string `json:"application_key,omitempty"`
-	ApplicationSecret string `json:"application_secret,omitempty"`
-	ConsumerKey       string `json:"consumer_key,omitempty"`
+	Name              string `yaml:"omitempty"`
+	ApplicationKey    string `yaml:"application_key,omitempty" path:"application_key"`
+	ApplicationSecret string `yaml:"application_secret,omitempty" path:"application_secret"`
+	ConsumerKey       string `yaml:"consumer_key,omitempty" path:"consumer_key"`
+}
+
+type OVHConfigs struct {
+	augeasPath string
+	Configs    map[string]OVHConfig `path:"section"`
 }
 
 func (o *OVH) GetName() string {
@@ -31,51 +35,53 @@ func (o *OVH) GetOutputPath() string {
 	return os.ExpandEnv("$HOME/.ovh.cfg")
 }
 
-func (o *OVH) Unseal() (err error) {
-	iCreds, err := o.Backend.GetCredentials(o.InputPath)
+func (o *OVH) UnsealAll() (err error) {
+	creds, err := o.Backend.ListCredentials(o.InputPath)
+	for _, cred := range creds {
+		err = o.Unseal(cred)
+		if err != nil {
+			return fmt.Errorf("failed to unseal secret: %s", err)
+		}
+	}
+	return
+}
+
+func (o *OVH) Unseal(cred string) (err error) {
+	var secret OVHConfig
+	err = o.Backend.GetSecret(o.InputPath+cred, &secret)
 	if err != nil {
 		return fmt.Errorf("failed to retrieve credentials: %s", err)
 	}
+	secret.Name = cred
 
-	bCreds, err := json.Marshal(iCreds)
+	err = o.writeSecret(o.GetOutputPath(), secret)
 	if err != nil {
-		return fmt.Errorf("failed to marshal credentials: %s", err)
+		return fmt.Errorf("failed to store credentials: %s", err)
 	}
-
-	var config OVHConfig
-	err = json.Unmarshal(bCreds, &config)
-	if err != nil {
-		return fmt.Errorf("failed to unmarshal credentials: %s", err)
-	}
-
-	o.buildConfig(o.GetOutputPath(), &config)
 
 	return
 }
 
-func (o *OVH) buildConfig(path string, config *OVHConfig) (err error) {
+func (o *OVH) writeSecret(path string, config OVHConfig) (err error) {
 	aug, err := augeas.New("/", "", augeas.None)
 	if err != nil {
 		return fmt.Errorf("failed to load augeas: %s", err)
 	}
 
-	err = aug.Set("/augeas/load/IniFile/lens", "Puppet.lns")
+	err = aug.Transform("IniFile.lns_loose", o.OutputPath, false)
 	if err != nil {
-		return fmt.Errorf("failed to set augeas lens: %s", err)
+		return fmt.Errorf("failed to set transform: %s", err)
 	}
-	err = aug.Set("/augeas/load/IniFile/incl", path)
-	if err != nil {
-		return fmt.Errorf("failed to set augeas incl: %s", err)
-	}
+	err = aug.Load()
 
-	keys := strings.Split(o.InputPath, "/")
-	resourceKey := keys[len(keys)-1]
-	matches, err := aug.Match("/files" + path + "/" + resourceKey)
-	if err != nil {
-		return fmt.Errorf("failed to list augeas resources: %s", err)
+	n := narcissus.New(&aug)
+	configs := OVHConfigs{
+		augeasPath: o.OutputPath,
 	}
-	if len(matches) == 0 {
-		// Create node
-	}
+	configs.Configs = make(map[string]OVHConfig)
+	configs.Configs[config.Name] = config
+
+	err = n.Write(configs)
+
 	return
 }

@@ -27,19 +27,20 @@ func (p *Pass) GetName() string {
 	return "Pass"
 }
 
-func (p *Pass) GetCredentials(inputPath string) (credentials interface{}, err error) {
-	secret, err := p.decryptSecret(inputPath)
+func (p *Pass) ListCredentials(inputPath string) (Credentials []string, err error) {
+	return
+}
+
+func (p *Pass) GetSecret(inputPath string, secret interface{}) (err error) {
+	s, err := p.decryptSecret(inputPath)
 	if err != nil {
-		return nil, fmt.Errorf("failed to decrypt secret: %s", err)
+		return fmt.Errorf("failed to decrypt secret: %s", err)
 	}
 
-	var c map[string]interface{}
-
-	err = yaml.Unmarshal(secret, &c)
+	err = yaml.Unmarshal(s, secret)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal secret: %s", err)
+		return fmt.Errorf("failed to unmarshal secret: %s", err)
 	}
-	credentials = &c
 	return
 }
 

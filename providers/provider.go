@@ -1,6 +1,8 @@
 package providers
 
 import (
+	"os"
+
 	"github.com/camptocamp/creds-unsealer/backends"
 	"github.com/camptocamp/creds-unsealer/config"
 )
@@ -8,7 +10,8 @@ import (
 type Provider interface {
 	GetName() string
 	GetOutputPath() string
-	Unseal() error
+	UnsealAll() error
+	Unseal(string) error
 }
 
 func List(cfg *config.Config) (providers []Provider, err error) {
@@ -21,9 +24,14 @@ func List(cfg *config.Config) (providers []Provider, err error) {
 	for _, provider := range cfg.Providers {
 		switch provider {
 		case "ovh":
+			var inputPath string
+			if inputPath = cfg.Provider.InputPath; inputPath == "" {
+				inputPath = "/ovh"
+			}
 			p = &OVH{
-				Backend:   backend,
-				InputPath: cfg.Provider.InputPath,
+				Backend:    backend,
+				InputPath:  inputPath,
+				OutputPath: os.ExpandEnv("$HOME/.ovh.cfg"),
 			}
 		}
 		providers = append(providers, p)

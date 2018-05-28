@@ -15,6 +15,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/raphink/narcissus"
+  packages = ["."]
+  revision = "24a07ee7f9d2728b6dfdb5df63dcb15c86ea4b83"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/crypto"
   packages = ["ssh/terminal"]
   revision = "159ae71589f303f9fbfd7528413e0fe944b9c1cb"
@@ -43,6 +49,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "cdb2c9cfb550e51d9e6c91bf5fb1f2878bdd3375b8b2aa2887c1649194b236e0"
+  inputs-digest = "a248a2caf1234f1ae5e2a42c284305e9ed40e7971f2cca8447ad65feeecd1d89"
   solver-name = "gps-cdcl"
   solver-version = 1
