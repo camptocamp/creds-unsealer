@@ -80,7 +80,7 @@ func (o *OVH) writeSecret(path string, config OVHConfig) (err error) {
 
 	n := narcissus.New(&aug)
 	configs := OVHConfigs{
-		augeasPath: o.OutputPath,
+		augeasPath: "/files" + o.OutputPath,
 	}
 	configs.Configs = make(map[string]OVHConfig)
 	configs.Configs[config.Name] = config
