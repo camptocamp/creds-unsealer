@@ -9,7 +9,6 @@ import (
 
 type Provider interface {
 	GetName() string
-	GetOutputPath() string
 	UnsealAll() error
 	Unseal(string) error
 }
