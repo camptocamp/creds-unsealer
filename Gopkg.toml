@@ -24,10 +24,115 @@
 #   go-tests = true
 #   unused-packages = true
 
-
 [[constraint]]
   name = "github.com/jessevdk/go-flags"
   version = "1.4.0"
+
+# Gopass dependencies
+
+[[override]]
+  branch = "master"
+  name = "github.com/atotto/clipboard"
+
+[[override]]
+  branch = "master"
+  name = "github.com/blang/semver"
+
+[[override]]
+  branch = "master"
+  name = "github.com/cenkalti/backoff"
+
+[[override]]
+  branch = "master"
+  name = "github.com/dominikschulz/github-releases"
+
+[[override]]
+  name = "github.com/fatih/color"
+  version = "1.5.0"
+
+[[override]]
+  branch = "master"
+  name = "github.com/gdamore/tcell"
+
+[[override]]
+  branch = "master"
+  name = "github.com/godbus/dbus"
+
+[[override]]
+  branch = "master"
+  name = "github.com/gokyle/twofactor"
+
+[[override]]
+  branch = "master"
+  name = "github.com/golang/protobuf"
+
+[[override]]
+  branch = "master"
+  name = "github.com/jroimartin/gocui"
+
+[[override]]
+  branch = "master"
+  name = "github.com/kballard/go-shellquote"
+
+[[override]]
+  branch = "master"
+  name = "github.com/martinhoefling/goxkcdpwgen"
+
+[[override]]
+  branch = "master"
+  name = "github.com/mattn/go-colorable"
+
+[[override]]
+  branch = "master"
+  name = "github.com/mattn/go-runewidth"
+
+[[override]]
+  branch = "master"
+  name = "github.com/mitchellh/go-homedir"
+
+[[override]]
+  branch = "master"
+  name = "github.com/muesli/crunchy"
+
+[[override]]
+  branch = "master"
+  name = "github.com/muesli/goprogressbar"
+
+[[override]]
+  branch = "master"
+  name = "github.com/pkg/errors"
+
+[[override]]
+  branch = "master"
+  name = "github.com/schollz/closestmatch"
+
+[[override]]
+  branch = "master"
+  name = "github.com/skip2/go-qrcode"
+
+[[override]]
+  branch = "master"
+  name = "github.com/stretchr/testify"
+
+[[override]]
+  branch = "master"
+  name = "github.com/urfave/cli"
+
+[[override]]
+  branch = "master"
+  name = "golang.org/x/crypto"
+
+[[override]]
+  branch = "master"
+  name = "golang.org/x/net"
+
+[[override]]
+  branch = "master"
+  name = "golang.org/x/sys"
+
+[[override]]
+  name = "gopkg.in/src-d/go-git.v4"
+  version = "4.1.1"
 
 [prune]
   go-tests = true

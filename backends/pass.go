@@ -1,11 +1,13 @@
 package backends
 
 import (
+	"context"
 	"fmt"
 	"os"
-	"os/exec"
-	"regexp"
 
+	"github.com/blang/semver"
+	"github.com/justwatchcom/gopass/action"
+	gpConfig "github.com/justwatchcom/gopass/config"
 	"gopkg.in/yaml.v2"
 
 	"github.com/camptocamp/creds-unsealer/config"
@@ -44,21 +46,21 @@ func (p *Pass) GetSecret(inputPath string, secret interface{}) (err error) {
 	return
 }
 
-func (p *Pass) decryptSecret(path string) ([]byte, error) {
-	// Using gpg binary.
-	// The golang package for opengpg still doesn't support well GPG 2.1.
-	// I don't want to use gopass packages because this backend should work with the old pass.
-
-	secretPath := p.Path + "/" + path + ".gpg"
-	out, err := exec.Command("gpg", "--decrypt", secretPath).Output()
+func (p *Pass) decryptSecret(path string) (content []byte, err error) {
+	act, err := action.New(context.Background(), gpConfig.Load(), semver.Version{})
 	if err != nil {
-		return nil, fmt.Errorf("failed to execute command: %s", err)
+		return nil, fmt.Errorf("failed to create gopass action: %s", err)
 	}
-	re := regexp.MustCompile(`(?ms)---(.*)`)
 
-	content := re.Find(out)
-	if content == nil {
-		return nil, fmt.Errorf("found empty content")
+	sec, err := act.Store.Get(context.Background(), path)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get secret: %s", err)
 	}
-	return content, nil
+
+	content, err = sec.Bytes()
+	if err != nil {
+		return nil, fmt.Errorf("failed to retrieve secret: %s", err)
+	}
+
+	return
 }
