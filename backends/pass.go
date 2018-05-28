@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"regexp"
+	"strings"
 
 	"github.com/blang/semver"
 	"github.com/justwatchcom/gopass/action"
@@ -57,7 +59,6 @@ func (p *Pass) GetSecret(inputPath string, secret interface{}) (err error) {
 	if err != nil {
 		return fmt.Errorf("failed to decrypt secret: %s", err)
 	}
-
 	err = yaml.Unmarshal(s, secret)
 	if err != nil {
 		return fmt.Errorf("failed to unmarshal secret: %s", err)
@@ -76,9 +77,15 @@ func (p *Pass) decryptSecret(path string) (content []byte, err error) {
 		return nil, fmt.Errorf("failed to get secret: %s", err)
 	}
 
-	content, err = sec.Bytes()
+	body, err := sec.Bytes()
 	if err != nil {
 		return nil, fmt.Errorf("failed to retrieve secret: %s", err)
+	}
+
+	re := regexp.MustCompile(`(?ms)---(.*)`)
+	content = re.Find(body)
+	if content == nil {
+		return nil, fmt.Errorf("found empty content")
 	}
 
 	return
