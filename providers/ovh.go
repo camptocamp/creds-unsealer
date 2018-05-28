@@ -85,7 +85,10 @@ func (o *OVH) writeSecret(path string, config OVHConfig) (err error) {
 	configs.Configs = make(map[string]OVHConfig)
 	configs.Configs[config.Name] = config
 
-	err = n.Write(configs)
+	err = n.Write(&configs)
+	if err != nil {
+		return fmt.Errorf("failed to write configs: %s", err)
+	}
 
 	return
 }
