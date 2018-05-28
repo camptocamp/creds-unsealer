@@ -16,7 +16,6 @@ type OVH struct {
 }
 
 type OVHConfig struct {
-	Name              string `yaml:"omitempty"`
 	ApplicationKey    string `yaml:"application_key,omitempty" path:"application_key"`
 	ApplicationSecret string `yaml:"application_secret,omitempty" path:"application_secret"`
 	ConsumerKey       string `yaml:"consumer_key,omitempty" path:"consumer_key"`
@@ -52,9 +51,8 @@ func (o *OVH) Unseal(cred string) (err error) {
 	if err != nil {
 		return fmt.Errorf("failed to retrieve credentials: %s", err)
 	}
-	secret.Name = cred
 
-	err = o.writeSecret(o.GetOutputPath(), secret)
+	err = o.writeSecret(cred, secret)
 	if err != nil {
 		return fmt.Errorf("failed to store credentials: %s", err)
 	}
@@ -62,8 +60,9 @@ func (o *OVH) Unseal(cred string) (err error) {
 	return
 }
 
-func (o *OVH) writeSecret(path string, config OVHConfig) (err error) {
-	aug, err := augeas.New("/", "", augeas.None)
+func (o *OVH) writeSecret(name string, config OVHConfig) (err error) {
+	aug, err := augeas.New("/", "", augeas.NoModlAutoload)
+	defer aug.Close()
 	if err != nil {
 		return fmt.Errorf("failed to initialize Augeas: %s", err)
 	}
@@ -78,12 +77,17 @@ func (o *OVH) writeSecret(path string, config OVHConfig) (err error) {
 		return fmt.Errorf("failed to load Augeas tree: %s", err)
 	}
 
+	augErr, _ := aug.Get("/augeas/files" + o.OutputPath + "/message")
+	if augErr != "" {
+		return fmt.Errorf("failed to load file with Augeas: %s", augErr)
+	}
+
 	n := narcissus.New(&aug)
 	configs := OVHConfigs{
 		augeasPath: "/files" + o.OutputPath,
 	}
 	configs.Configs = make(map[string]OVHConfig)
-	configs.Configs[config.Name] = config
+	configs.Configs[name] = config
 
 	err = n.Write(&configs)
 	if err != nil {
