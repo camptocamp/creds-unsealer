@@ -24,7 +24,7 @@ type OVHConfig struct {
 
 type OVHConfigs struct {
 	augeasPath string
-	Configs    map[string]OVHConfig `path:"section"`
+	Configs    map[string]OVHConfig `path:"section" purge:"false"`
 }
 
 func (o *OVH) GetName() string {
