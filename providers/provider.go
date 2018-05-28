@@ -31,7 +31,7 @@ func List(cfg *config.Config) (providers []Provider, err error) {
 			p = &OVH{
 				Backend:    backend,
 				InputPath:  inputPath,
-				OutputPath: os.ExpandEnv("$HOME/.ovh.cfg"),
+				OutputPath: os.ExpandEnv("$HOME/.ovh.conf"),
 			}
 		}
 		providers = append(providers, p)
