@@ -24,11 +24,11 @@ type Config struct {
 }
 
 // LoadConfig loads the config from flags & environment
-func LoadConfig(version string) (*Config, error) {
+func LoadConfig(version string) *Config {
 	var c Config
 	parser := flags.NewParser(&c, flags.Default)
 	if _, err := parser.Parse(); err != nil {
-		return nil, fmt.Errorf("failed to parse config: %s", err)
+		os.Exit(1)
 	}
 
 	if c.Version {
@@ -40,5 +40,5 @@ func LoadConfig(version string) (*Config, error) {
 		os.Exit(0)
 	}
 
-	return &c, nil
+	return &c
 }

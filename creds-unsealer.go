@@ -11,12 +11,7 @@ var version string = "undefined"
 var cfg *config.Config
 
 func init() {
-	var err error
-	cfg, err = config.LoadConfig(version)
-	if err != nil {
-		log.Errorf("%s", err)
-		return
-	}
+	cfg = config.LoadConfig(version)
 }
 
 func main() {
