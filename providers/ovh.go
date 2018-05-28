@@ -32,13 +32,13 @@ func (o *OVH) GetName() string {
 }
 
 func (o *OVH) GetOutputPath() string {
-	return os.ExpandEnv("$HOME/.ovh.cfg")
+	return os.ExpandEnv("$HOME/.ovh.conf")
 }
 
 func (o *OVH) UnsealAll() (err error) {
-	creds, err := o.Backend.ListCredentials(o.InputPath)
-	for _, cred := range creds {
-		err = o.Unseal(cred)
+	secrets, err := o.Backend.ListSecrets(o.InputPath)
+	for _, secret := range secrets {
+		err = o.Unseal(secret)
 		if err != nil {
 			return fmt.Errorf("failed to unseal secret: %s", err)
 		}
