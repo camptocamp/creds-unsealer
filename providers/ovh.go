@@ -65,14 +65,18 @@ func (o *OVH) Unseal(cred string) (err error) {
 func (o *OVH) writeSecret(path string, config OVHConfig) (err error) {
 	aug, err := augeas.New("/", "", augeas.None)
 	if err != nil {
-		return fmt.Errorf("failed to load augeas: %s", err)
+		return fmt.Errorf("failed to initialize Augeas: %s", err)
 	}
 
 	err = aug.Transform("IniFile.lns_loose", o.OutputPath, false)
 	if err != nil {
-		return fmt.Errorf("failed to set transform: %s", err)
+		return fmt.Errorf("failed to set up Augeas transform: %s", err)
 	}
+
 	err = aug.Load()
+	if err != nil {
+		return fmt.Errorf("failed to load Augeas tree: %s", err)
+	}
 
 	n := narcissus.New(&aug)
 	configs := OVHConfigs{
