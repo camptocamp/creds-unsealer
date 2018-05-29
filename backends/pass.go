@@ -37,7 +37,8 @@ func (p *Pass) GetName() string {
 
 // ListSecrets returns the list of secrets from gopass
 func (p *Pass) ListSecrets(inputPath string) (secrets []string, err error) {
-	act, err := action.New(context.Background(), gpConfig.Load(), semver.Version{})
+	var gpc *gpConfig.Config
+	act, err := p.initGopass(gpc)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create gopass action: %s", err)
 	}
@@ -78,7 +79,8 @@ func (p *Pass) GetSecret(inputPath string, secret interface{}) (err error) {
 }
 
 func (p *Pass) decryptSecret(path string) (content []byte, err error) {
-	act, err := action.New(context.Background(), gpConfig.Load(), semver.Version{})
+	var gpc *gpConfig.Config
+	act, err := p.initGopass(gpc)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create gopass action: %s", err)
 	}
@@ -99,5 +101,19 @@ func (p *Pass) decryptSecret(path string) (content []byte, err error) {
 		return nil, fmt.Errorf("found empty content")
 	}
 
+	return
+}
+
+func (p *Pass) initGopass(gpc *gpConfig.Config) (act *action.Action, err error) {
+	if p.Path == "" {
+		gpc = gpConfig.Load()
+	} else {
+		gpc = gpConfig.New()
+		s := &gpConfig.StoreConfig{
+			Path: p.Path,
+		}
+		gpc.Root = s
+	}
+	act, err = action.New(context.Background(), gpc, semver.Version{})
 	return
 }

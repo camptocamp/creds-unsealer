@@ -57,7 +57,7 @@ func (o *OVH) UnsealAll() (err error) {
 // Unseal unseals a secret from the backend and add it to the config file
 func (o *OVH) Unseal(cred string) (err error) {
 	var secret OVHConfig
-	err = o.Backend.GetSecret(o.InputPath+cred, &secret)
+	err = o.Backend.GetSecret(o.InputPath+"/"+cred, &secret)
 	if err != nil {
 		return fmt.Errorf("failed to retrieve credentials: %s", err)
 	}

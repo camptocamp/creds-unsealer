@@ -27,7 +27,7 @@ func List(cfg *config.Config) (providers []Provider, err error) {
 		case "ovh":
 			var inputPath string
 			if inputPath = cfg.Provider.InputPath; inputPath == "" {
-				inputPath = "/ovh"
+				inputPath = "ovh/"
 			}
 			p = &OVH{
 				Backend:    backend,
