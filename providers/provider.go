@@ -45,6 +45,15 @@ func List(cfg *config.Config) (providers []Provider, err error) {
 					outputKeyPrefix: cfg.OutputKeyPrefix,
 				},
 			}
+		case "aws":
+			p = &AWS{
+				BaseProvider: &BaseProvider{
+					backend:         backend,
+					inputPath:       cfg.AWS.InputPath,
+					outputPath:      os.ExpandEnv("$HOME/.aws/credentials"),
+					outputKeyPrefix: cfg.OutputKeyPrefix,
+				},
+			}
 		}
 		providers = append(providers, p)
 	}
@@ -60,6 +69,7 @@ func UnsealAll(p Provider) (err error) {
 	}).Debugf("Retrieved secrets: %v", secrets)
 
 	for _, secret := range secrets {
+		log.Debugf("Unsealing secret '%s'", secret)
 		err = p.Unseal(secret)
 		if err != nil {
 			return fmt.Errorf("failed to unseal secret: %s", err)

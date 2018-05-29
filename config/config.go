@@ -15,7 +15,7 @@ type Config struct {
 	LogLevel        string   `short:"l" long:"loglevel" description:"Set loglevel ('debug', 'info', 'warn', 'error', 'fatal', 'panic')." env:"BIVAC_LOG_LEVEL" default:"info"`
 	Manpage         bool     `short:"m" long:"manpage" description:"Output manpage."`
 	Backend         string   `short:"b" long:"backend" description:"Backend to use." env:"CREDS_BACKEND" default:"pass"`
-	Providers       []string `short:"p" long:"providers" description:"Providers to use." env:"CREDS_PROVIDERS" default:"ovh"`
+	Providers       []string `short:"p" long:"providers" description:"Providers to use." env:"CREDS_PROVIDERS" default:"ovh" default:"aws"`
 	OutputKeyPrefix string   `long:"output-key-prefix" description:"String to prepend to key of the secret"`
 
 	// Backends configuration
@@ -27,6 +27,11 @@ type Config struct {
 	OVH struct {
 		InputPath string `long:"provider-ovh-input-path" description:"OVH Provider input path" default:"ovh"`
 	} `group:"OVH Provider options"`
+
+	// Providers configuration
+	AWS struct {
+		InputPath string `long:"provider-aws-input-path" description:"AWS Provider input path" default:"aws"`
+	} `group:"AWS Provider options"`
 }
 
 // LoadConfig loads the config from flags & environment
