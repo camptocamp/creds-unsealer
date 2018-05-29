@@ -25,13 +25,9 @@ func List(cfg *config.Config) (providers []Provider, err error) {
 	for _, provider := range cfg.Providers {
 		switch provider {
 		case "ovh":
-			var inputPath string
-			if inputPath = cfg.Provider.InputPath; inputPath == "" {
-				inputPath = "ovh/"
-			}
 			p = &OVH{
 				Backend:    backend,
-				InputPath:  inputPath,
+				InputPath:  cfg.OVH.InputPath,
 				OutputPath: os.ExpandEnv("$HOME/.ovh.conf"),
 			}
 		}
