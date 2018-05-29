@@ -66,22 +66,27 @@ func UnsealAll(p Provider) (err error) {
 	return
 }
 
+// GetName return the provider's name
 func (p *BaseProvider) GetName() string {
 	return "Base"
 }
 
+// GetBackend return the provider's backend
 func (p *BaseProvider) GetBackend() backends.Backend {
 	return p.backend
 }
 
+// GetInputPath return the provider's input path
 func (p *BaseProvider) GetInputPath() string {
 	return p.inputPath
 }
 
+// GetOutputPath return the provider's output path
 func (p *BaseProvider) GetOutputPath() string {
 	return p.outputPath
 }
 
+// Unseal unseals a secret
 func (p *BaseProvider) Unseal(s string) error {
 	return nil
 }
