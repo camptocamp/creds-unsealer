@@ -23,6 +23,8 @@ type OVHConfig struct {
 }
 
 type OVHConfigs struct {
+	augeasFile string
+	augeasLens string `default:"IniFile.lns_loose"`
 	augeasPath string
 	Configs    map[string]OVHConfig `path:"section" purge:"false"`
 }
@@ -69,23 +71,9 @@ func (o *OVH) writeSecret(name string, config OVHConfig) (err error) {
 		return fmt.Errorf("failed to initialize Augeas: %s", err)
 	}
 
-	err = aug.Transform("IniFile.lns_loose", o.OutputPath, false)
-	if err != nil {
-		return fmt.Errorf("failed to set up Augeas transform: %s", err)
-	}
-
-	err = aug.Load()
-	if err != nil {
-		return fmt.Errorf("failed to load Augeas tree: %s", err)
-	}
-
-	augErr, _ := aug.Get("/augeas/files" + o.OutputPath + "/message")
-	if augErr != "" {
-		return fmt.Errorf("failed to load file with Augeas: %s", augErr)
-	}
-
 	n := narcissus.New(&aug)
 	configs := OVHConfigs{
+		augeasFile: o.OutputPath,
 		augeasPath: "/files" + o.OutputPath,
 	}
 	configs.Configs = make(map[string]OVHConfig)

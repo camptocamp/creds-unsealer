@@ -210,7 +210,7 @@
   branch = "master"
   name = "github.com/raphink/narcissus"
   packages = ["."]
-  revision = "aa4a34a4371c78090a81fb13de905aa6dab4379c"
+  revision = "950142198b3d847adc2221cf0fc1f50df76b9258"
 
 [[projects]]
   branch = "master"
