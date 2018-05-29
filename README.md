@@ -7,18 +7,15 @@ Usage
 -----
 
 ```shell
-
-
 Usage:
   creds-unsealer [OPTIONS]
 
 Application Options:
   -V, --version                  Display version.
-  -l, --loglevel=                Set loglevel ('debug', 'info', 'warn', 'error', 'fatal', 'panic').
-                                 (default: info) [$BIVAC_LOG_LEVEL]
+  -l, --loglevel=                Set loglevel ('debug', 'info', 'warn', 'error', 'fatal', 'panic'). (default: info) [$BIVAC_LOG_LEVEL]
   -m, --manpage                  Output manpage.
   -b, --backend=                 Backend to use. (default: pass) [$CREDS_BACKEND]
-  -p, --providers=               Providers to use. (default: ovh) [$CREDS_PROVIDERS]
+  -p, --providers=               Providers to use. (default: ovh, aws) [$CREDS_PROVIDERS]
       --output-key-prefix=       String to prepend to key of the secret
 
 Pass backend options:
@@ -26,6 +23,9 @@ Pass backend options:
 
 OVH Provider options:
       --provider-ovh-input-path= OVH Provider input path (default: ovh)
+
+AWS Provider options:
+      --provider-aws-input-path= AWS Provider input path (default: aws)
 
 Help Options:
   -h, --help                     Show this help message
