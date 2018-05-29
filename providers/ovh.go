@@ -3,9 +3,11 @@ package providers
 import (
 	"fmt"
 
-	"github.com/camptocamp/creds-unsealer/backends"
 	"github.com/raphink/narcissus"
+	log "github.com/sirupsen/logrus"
 	"honnef.co/go/augeas"
+
+	"github.com/camptocamp/creds-unsealer/backends"
 )
 
 type OVH struct {
@@ -31,6 +33,11 @@ func (o *OVH) GetName() string {
 
 func (o *OVH) UnsealAll() (err error) {
 	secrets, err := o.Backend.ListSecrets(o.InputPath)
+
+	log.WithFields(log.Fields{
+		"provider": o.GetName(),
+	}).Debugf("Retrieved secrets: %v", secrets)
+
 	for _, secret := range secrets {
 		err = o.Unseal(secret)
 		if err != nil {

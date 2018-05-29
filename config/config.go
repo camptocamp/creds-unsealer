@@ -4,13 +4,15 @@ import (
 	"fmt"
 	"os"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/jessevdk/go-flags"
 )
 
 // Config stores the handler's configuration and UI interface parameters
 type Config struct {
 	Version   bool     `short:"V" long:"version" description:"Display version."`
-	Loglevel  string   `short:"l" long:"loglevel" description:"Set loglevel ('debug', 'info', 'warn', 'error', 'fatal', 'panic')." env:"BIVAC_LOG_LEVEL" default:"info"`
+	LogLevel  string   `short:"l" long:"loglevel" description:"Set loglevel ('debug', 'info', 'warn', 'error', 'fatal', 'panic')." env:"BIVAC_LOG_LEVEL" default:"info"`
 	Manpage   bool     `short:"m" long:"manpage" description:"Output manpage."`
 	Backend   string   `short:"b" long:"backend" description:"Backend to use." env:"CREDS_BACKEND" default:"pass"`
 	Providers []string `short:"p" long:"providers" description:"Providers to use." env:"CREDS_PROVIDERS" default:"ovh"`
@@ -40,5 +42,31 @@ func LoadConfig(version string) *Config {
 		os.Exit(0)
 	}
 
+	err := c.setupLogLevel()
+	if err != nil {
+		log.Errorf("failed to setup log level: %s", err)
+		os.Exit(1)
+	}
 	return &c
+}
+
+func (c *Config) setupLogLevel() (err error) {
+	switch c.LogLevel {
+	case "debug":
+		log.SetLevel(log.DebugLevel)
+	case "info":
+		log.SetLevel(log.InfoLevel)
+	case "warn":
+		log.SetLevel(log.WarnLevel)
+	case "error":
+		log.SetLevel(log.ErrorLevel)
+	case "fatal":
+		log.SetLevel(log.FatalLevel)
+	case "panic":
+		log.SetLevel(log.PanicLevel)
+	default:
+		err = fmt.Errorf("Wrong log level '%v'", c.LogLevel)
+	}
+
+	return
 }

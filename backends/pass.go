@@ -10,6 +10,7 @@ import (
 	"github.com/blang/semver"
 	"github.com/justwatchcom/gopass/action"
 	gpConfig "github.com/justwatchcom/gopass/config"
+	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 
 	"github.com/camptocamp/creds-unsealer/config"
@@ -36,6 +37,11 @@ func (p *Pass) ListSecrets(inputPath string) (secrets []string, err error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to create gopass action: %s", err)
 	}
+
+	log.WithFields(log.Fields{
+		"backend": p.GetName(),
+	}).Debugf("Using path: %s", act.Store.Path())
+
 	rootTree, err := act.Store.Tree(context.Background())
 	if err != nil {
 		return nil, fmt.Errorf("failed to retrieve gopass root tree: %s", err)
