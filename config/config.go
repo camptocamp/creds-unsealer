@@ -17,7 +17,7 @@ type Config struct {
 	Backend   string   `short:"b" long:"backend" description:"Backend to use." env:"CREDS_BACKEND" default:"pass"`
 	Providers []string `short:"p" long:"providers" description:"Providers to use." env:"CREDS_PROVIDERS" default:"ovh"`
 	Pass      struct {
-		Path string `long:"pass-path" description:"Path to password-store." env:"CREDS_PASS_PATH" default:"$HOME/.password-store"`
+		Path string `long:"pass-path" description:"Path to password-store." env:"CREDS_PASS_PATH"`
 	} `group:"Pass backend options"`
 
 	Provider struct {
