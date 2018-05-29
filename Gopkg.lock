@@ -2,12 +2,6 @@
 
 
 [[projects]]
-  name = "github.com/sirupsen/logrus"
-  packages = ["."]
-  revision = "c155da19408a8799da419ed3eeb0cb5db0ad5dbc"
-  version = "v1.0.5"
-
-[[projects]]
   branch = "master"
   name = "github.com/atotto/clipboard"
   packages = ["."]
@@ -431,6 +425,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "4a2347a3ef08f02401dbb8c55d80e1521de2f38f71937df19b19af87cf0db624"
+  inputs-digest = "ef6bf316dc2727c1ac240edeeebbe89e193599709cdb87daf6c4507389f1176e"
   solver-name = "gps-cdcl"
   solver-version = 1
