@@ -16,11 +16,11 @@ func init() {
 
 func main() {
 
-	providers, _ := providers.List(cfg)
+	pp, _ := providers.List(cfg)
 
-	for _, p := range providers {
+	for _, p := range pp {
 		log.Infof("Using provider %s", p.GetName())
-		err := p.UnsealAll()
+		err := providers.UnsealAll(p)
 		if err != nil {
 			log.Errorf("failed to unseal: %s", err)
 		}

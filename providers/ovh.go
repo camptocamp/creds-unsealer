@@ -4,17 +4,12 @@ import (
 	"fmt"
 
 	"github.com/raphink/narcissus"
-	log "github.com/sirupsen/logrus"
 	"honnef.co/go/augeas"
-
-	"github.com/camptocamp/creds-unsealer/backends"
 )
 
 // OVH stores data used to manage OVH credentials
 type OVH struct {
-	Backend    backends.Backend
-	InputPath  string
-	OutputPath string
+	*BaseProvider
 }
 
 // OVHConfig represents an entry in the OVH's configuration file
@@ -37,27 +32,10 @@ func (o *OVH) GetName() string {
 	return "OVH"
 }
 
-// UnsealAll unseals all secrets from the backend and add them to the config file
-func (o *OVH) UnsealAll() (err error) {
-	secrets, err := o.Backend.ListSecrets(o.InputPath)
-
-	log.WithFields(log.Fields{
-		"provider": o.GetName(),
-	}).Debugf("Retrieved secrets: %v", secrets)
-
-	for _, secret := range secrets {
-		err = o.Unseal(secret)
-		if err != nil {
-			return fmt.Errorf("failed to unseal secret: %s", err)
-		}
-	}
-	return
-}
-
 // Unseal unseals a secret from the backend and add it to the config file
 func (o *OVH) Unseal(cred string) (err error) {
 	var secret OVHConfig
-	err = o.Backend.GetSecret(o.InputPath+"/"+cred, &secret)
+	err = o.backend.GetSecret(o.inputPath+"/"+cred, &secret)
 	if err != nil {
 		return fmt.Errorf("failed to retrieve credentials: %s", err)
 	}
@@ -79,8 +57,8 @@ func (o *OVH) writeSecret(name string, config OVHConfig) (err error) {
 
 	n := narcissus.New(&aug)
 	configs := OVHConfigs{
-		augeasFile: o.OutputPath,
-		augeasPath: "/files" + o.OutputPath,
+		augeasFile: o.outputPath,
+		augeasPath: "/files" + o.outputPath,
 	}
 	configs.Configs = make(map[string]OVHConfig)
 	configs.Configs[name] = config
