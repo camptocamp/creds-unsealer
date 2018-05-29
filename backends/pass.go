@@ -57,9 +57,9 @@ func (p *Pass) ListSecrets(inputPath string) (secrets []string, err error) {
 	}
 
 	l := t.List(1)
-	secrets = make([]string, len(l)-1)
 	for _, secret := range l {
 		s := strings.Split(secret, "/")
+		log.Debugf("Found secret '%s'", string(s[1]))
 		secrets = append(secrets, string(s[1]))
 	}
 	return
@@ -85,9 +85,10 @@ func (p *Pass) decryptSecret(path string) (content []byte, err error) {
 		return nil, fmt.Errorf("failed to create gopass action: %s", err)
 	}
 
+	log.Debugf("Getting secret at %s", path)
 	sec, err := act.Store.Get(context.Background(), path)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get secret: %s", err)
+		return nil, fmt.Errorf("failed to get secret at %s: %s", path, err)
 	}
 
 	body, err := sec.Bytes()
