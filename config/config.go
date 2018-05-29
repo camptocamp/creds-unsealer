@@ -11,11 +11,12 @@ import (
 
 // Config stores the handler's configuration and UI interface parameters
 type Config struct {
-	Version   bool     `short:"V" long:"version" description:"Display version."`
-	LogLevel  string   `short:"l" long:"loglevel" description:"Set loglevel ('debug', 'info', 'warn', 'error', 'fatal', 'panic')." env:"BIVAC_LOG_LEVEL" default:"info"`
-	Manpage   bool     `short:"m" long:"manpage" description:"Output manpage."`
-	Backend   string   `short:"b" long:"backend" description:"Backend to use." env:"CREDS_BACKEND" default:"pass"`
-	Providers []string `short:"p" long:"providers" description:"Providers to use." env:"CREDS_PROVIDERS" default:"ovh"`
+	Version         bool     `short:"V" long:"version" description:"Display version."`
+	LogLevel        string   `short:"l" long:"loglevel" description:"Set loglevel ('debug', 'info', 'warn', 'error', 'fatal', 'panic')." env:"BIVAC_LOG_LEVEL" default:"info"`
+	Manpage         bool     `short:"m" long:"manpage" description:"Output manpage."`
+	Backend         string   `short:"b" long:"backend" description:"Backend to use." env:"CREDS_BACKEND" default:"pass"`
+	Providers       []string `short:"p" long:"providers" description:"Providers to use." env:"CREDS_PROVIDERS" default:"ovh"`
+	OutputKeyPrefix string   `long:"output-key-prefix" description:"String to prepend to key of the secret"`
 
 	// Backends configuration
 	Pass struct {

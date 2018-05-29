@@ -20,9 +20,10 @@ type Provider interface {
 
 // BaseProvider implements a base Provider
 type BaseProvider struct {
-	backend    backends.Backend
-	inputPath  string
-	outputPath string
+	backend         backends.Backend
+	inputPath       string
+	outputPath      string
+	outputKeyPrefix string
 }
 
 // List returns providers declared in config
@@ -38,9 +39,10 @@ func List(cfg *config.Config) (providers []Provider, err error) {
 		case "ovh":
 			p = &OVH{
 				BaseProvider: &BaseProvider{
-					backend:    backend,
-					inputPath:  cfg.OVH.InputPath,
-					outputPath: os.ExpandEnv("$HOME/.ovh.conf"),
+					backend:         backend,
+					inputPath:       cfg.OVH.InputPath,
+					outputPath:      os.ExpandEnv("$HOME/.ovh.conf"),
+					outputKeyPrefix: cfg.OutputKeyPrefix,
 				},
 			}
 		}

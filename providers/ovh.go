@@ -61,7 +61,7 @@ func (o *OVH) writeSecret(name string, config OVHConfig) (err error) {
 		augeasPath: "/files" + o.outputPath,
 	}
 	configs.Configs = make(map[string]OVHConfig)
-	configs.Configs[name] = config
+	configs.Configs[o.outputKeyPrefix+name] = config
 
 	err = n.Write(&configs)
 	if err != nil {
