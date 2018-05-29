@@ -16,13 +16,16 @@ type Config struct {
 	Manpage   bool     `short:"m" long:"manpage" description:"Output manpage."`
 	Backend   string   `short:"b" long:"backend" description:"Backend to use." env:"CREDS_BACKEND" default:"pass"`
 	Providers []string `short:"p" long:"providers" description:"Providers to use." env:"CREDS_PROVIDERS" default:"ovh"`
-	Pass      struct {
-		Path string `long:"pass-path" description:"Path to password-store." env:"CREDS_PASS_PATH"`
+
+	// Backends configuration
+	Pass struct {
+		Path string `long:"backend-pass-path" description:"Path to password-store." env:"CREDS_BACKEND_PASS_PATH"`
 	} `group:"Pass backend options"`
 
-	Provider struct {
-		InputPath string `long:"provider-input-path" description:"Provider input path"`
-	} `group:"Provider options"`
+	// Providers configuration
+	OVH struct {
+		InputPath string `long:"provider-ovh-input-path" description:"OVH Provider input path" default:"ovh"`
+	} `group:"OVH Provider options"`
 }
 
 // LoadConfig loads the config from flags & environment
