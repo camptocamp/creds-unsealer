@@ -7,6 +7,8 @@ Usage
 -----
 
 ```shell
+
+
 Usage:
   creds-unsealer [OPTIONS]
 
@@ -17,6 +19,7 @@ Application Options:
   -m, --manpage                  Output manpage.
   -b, --backend=                 Backend to use. (default: pass) [$CREDS_BACKEND]
   -p, --providers=               Providers to use. (default: ovh) [$CREDS_PROVIDERS]
+      --output-key-prefix=       String to prepend to key of the secret
 
 Pass backend options:
       --backend-pass-path=       Path to password-store. [$CREDS_BACKEND_PASS_PATH]
