@@ -19,9 +19,9 @@ type OVH struct {
 
 // OVHConfig represents an entry in the OVH's configuration file
 type OVHConfig struct {
-	ApplicationKey    string `yaml:"application_key,omitempty" path:"application_key"`
-	ApplicationSecret string `yaml:"application_secret,omitempty" path:"application_secret"`
-	ConsumerKey       string `yaml:"consumer_key,omitempty" path:"consumer_key"`
+	ApplicationKey    string `yaml:"application_key,omitempty" narcissus:"application_key"`
+	ApplicationSecret string `yaml:"application_secret,omitempty" narcissus:"application_secret"`
+	ConsumerKey       string `yaml:"consumer_key,omitempty" narcissus:"consumer_key"`
 }
 
 // OVHConfigs is used by Narcissus to manage entries on the OVH's configuration file
@@ -29,7 +29,7 @@ type OVHConfigs struct {
 	augeasFile string
 	augeasLens string `default:"IniFile.lns_loose"`
 	augeasPath string
-	Configs    map[string]OVHConfig `path:"section" purge:"false"`
+	Configs    map[string]OVHConfig `narcissus:"section"`
 }
 
 // GetName returns the provider's name
