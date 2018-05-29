@@ -7,12 +7,14 @@ import (
 	"github.com/camptocamp/creds-unsealer/config"
 )
 
+// Provider is an interface used to abstract the provider
 type Provider interface {
 	GetName() string
 	UnsealAll() error
 	Unseal(string) error
 }
 
+// List returns providers declared in config
 func List(cfg *config.Config) (providers []Provider, err error) {
 	backend, err := backends.GetBackend(cfg)
 	if err != nil {

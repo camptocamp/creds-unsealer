@@ -7,7 +7,7 @@ import (
 	"github.com/camptocamp/creds-unsealer/providers"
 )
 
-var version string = "undefined"
+var version = "undefined"
 var cfg *config.Config
 
 func init() {

@@ -4,9 +4,9 @@ VERSION = $(shell git describe --always --dirty)
 all: test creds-unsealer creds-unsealer.1
 
 creds-unsealer: creds-unsealer.go $(DEPS)
-	CGO_ENABLED=0 GOOS=linux \
+	CGO_ENABLED=1 GOOS=linux \
 	  go build -a \
-		  -ldflags="-X main.version=$(VERSION)" \
+		  -ldflags='-X main.version=$(VERSION)' \
 	    -installsuffix cgo -o $@ $<
 	strip $@
 

@@ -16,10 +16,12 @@ import (
 	"github.com/camptocamp/creds-unsealer/config"
 )
 
+// Pass stores data used by gopass
 type Pass struct {
 	Path string
 }
 
+// NewPassBackend returns a Pass struct based on config
 func NewPassBackend(c *config.Config) (p *Pass) {
 	p = &Pass{
 		Path: os.ExpandEnv(c.Pass.Path),
@@ -28,10 +30,12 @@ func NewPassBackend(c *config.Config) (p *Pass) {
 	return
 }
 
+// GetName returns the backend name
 func (p *Pass) GetName() string {
 	return "Pass"
 }
 
+// ListSecrets returns the list of secrets from gopass
 func (p *Pass) ListSecrets(inputPath string) (secrets []string, err error) {
 	act, err := action.New(context.Background(), gpConfig.Load(), semver.Version{})
 	if err != nil {
@@ -60,6 +64,7 @@ func (p *Pass) ListSecrets(inputPath string) (secrets []string, err error) {
 	return
 }
 
+// GetSecret decrypt a gopass secret and stores it in the interface `secret`
 func (p *Pass) GetSecret(inputPath string, secret interface{}) (err error) {
 	s, err := p.decryptSecret(inputPath)
 	if err != nil {

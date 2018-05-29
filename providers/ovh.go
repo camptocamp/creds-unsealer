@@ -10,18 +10,21 @@ import (
 	"github.com/camptocamp/creds-unsealer/backends"
 )
 
+// OVH stores data used to manage OVH credentials
 type OVH struct {
 	Backend    backends.Backend
 	InputPath  string
 	OutputPath string
 }
 
+// OVHConfig represents an entry in the OVH's configuration file
 type OVHConfig struct {
 	ApplicationKey    string `yaml:"application_key,omitempty" path:"application_key"`
 	ApplicationSecret string `yaml:"application_secret,omitempty" path:"application_secret"`
 	ConsumerKey       string `yaml:"consumer_key,omitempty" path:"consumer_key"`
 }
 
+// OVHConfigs is used by Narcissus to manage entries on the OVH's configuration file
 type OVHConfigs struct {
 	augeasFile string
 	augeasLens string `default:"IniFile.lns_loose"`
@@ -29,10 +32,12 @@ type OVHConfigs struct {
 	Configs    map[string]OVHConfig `path:"section" purge:"false"`
 }
 
+// GetName returns the provider's name
 func (o *OVH) GetName() string {
 	return "OVH"
 }
 
+// UnsealAll unseals all secrets from the backend and add them to the config file
 func (o *OVH) UnsealAll() (err error) {
 	secrets, err := o.Backend.ListSecrets(o.InputPath)
 
@@ -49,6 +54,7 @@ func (o *OVH) UnsealAll() (err error) {
 	return
 }
 
+// Unseal unseals a secret from the backend and add it to the config file
 func (o *OVH) Unseal(cred string) (err error) {
 	var secret OVHConfig
 	err = o.Backend.GetSecret(o.InputPath+cred, &secret)
