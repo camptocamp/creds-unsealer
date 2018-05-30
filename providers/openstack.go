@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/mitchellh/go-homedir"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 )
@@ -30,6 +31,8 @@ type OpenstackConfig struct {
 	RegionName         string `yaml:"region_name,omitempty"`
 	IdentityAPIVersion string `yaml:"identity_api_version,omitempty"`
 	Interface          string `yaml:"interface,omitempty"`
+	Cert               string `yaml:"cert,omitempty"`
+	Key                string `yaml:"key,omitempty"`
 }
 
 // OpenstackClouds represents the Openstack's clouds.yaml
@@ -49,6 +52,10 @@ func (o *Openstack) Unseal(cred string) (err error) {
 	if err != nil {
 		return fmt.Errorf("failed to retrieve credentials: %s", err)
 	}
+
+	// Expand certificates path
+	secret.Cert, _ = homedir.Expand(secret.Cert)
+	secret.Key, _ = homedir.Expand(secret.Key)
 
 	err = o.writeSecret(cred, secret)
 	if err != nil {
