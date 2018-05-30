@@ -37,18 +37,6 @@ type OpenstackClouds struct {
 	Clouds map[string]*OpenstackConfig `yaml:"clouds"`
 }
 
-type openstackFlatConfig struct {
-	AuthURL            string `yaml:"auth_url,omitempty"`
-	Password           string `yaml:"password,omitempty"`
-	ProjectID          string `yaml:"project_id,omitempty"`
-	ProjectName        string `yaml:"project_name,omitempty"`
-	UserName           string `yaml:"user_name,omitempty"`
-	UserDomainName     string `yaml:"user_domain_name,omitempty"`
-	RegionName         string `yaml:"region_name,omitempty"`
-	IdentityAPIVersion string `yaml:"identity_api_version,omitempty"`
-	Interface          string `yaml:"interface,omitempty"`
-}
-
 // GetName returns the provider's name
 func (o *Openstack) GetName() string {
 	return "Openstack"
@@ -56,24 +44,10 @@ func (o *Openstack) GetName() string {
 
 // Unseal unseals a secret from the backend and add it to the config file
 func (o *Openstack) Unseal(cred string) (err error) {
-	var rawSecret *openstackFlatConfig
-	err = o.backend.GetSecret(o.inputPath+"/"+cred, &rawSecret)
+	var secret OpenstackConfig
+	err = o.backend.GetSecret(o.inputPath+"/"+cred, &secret)
 	if err != nil {
 		return fmt.Errorf("failed to retrieve credentials: %s", err)
-	}
-
-	secret := OpenstackConfig{
-		Auth: &OpenstackConfigAuth{
-			AuthURL:        rawSecret.AuthURL,
-			Password:       rawSecret.Password,
-			ProjectID:      rawSecret.ProjectID,
-			ProjectName:    rawSecret.ProjectName,
-			UserName:       rawSecret.UserName,
-			UserDomainName: rawSecret.UserDomainName,
-		},
-		RegionName:         rawSecret.RegionName,
-		IdentityAPIVersion: rawSecret.IdentityAPIVersion,
-		Interface:          rawSecret.Interface,
 	}
 
 	err = o.writeSecret(cred, secret)
