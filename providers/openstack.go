@@ -21,7 +21,7 @@ type OpenstackConfigAuth struct {
 	Password       string `yaml:"password,omitempty"`
 	ProjectID      string `yaml:"project_id,omitempty"`
 	ProjectName    string `yaml:"project_name,omitempty"`
-	UserName       string `yaml:"user_name,omitempty"`
+	Username       string `yaml:"username,omitempty"`
 	UserDomainName string `yaml:"user_domain_name,omitempty"`
 }
 
