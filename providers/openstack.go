@@ -83,13 +83,6 @@ func (o *Openstack) writeSecret(name string, config OpenstackConfig) (err error)
 		log.Fatalf("error: %v", err)
 	}
 
-	for cloudKey := range t.Clouds {
-		if cloudKey == o.outputKeyPrefix+name {
-			t.Clouds[cloudKey] = &config
-			return
-		}
-	}
-
 	t.Clouds[o.outputKeyPrefix+name] = &config
 
 	d, err := yaml.Marshal(&t)
