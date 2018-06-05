@@ -1,12 +1,17 @@
 DEPS = $(wildcard */*.go)
 VERSION = $(shell git describe --always --dirty)
 
+SHARED_LIBS = "libxml-2.0 augeas"
+CGO_CFLAGS = $(shell pkg-config --cflags $(SHARED_LIBS))
+CGO_LDFLAGS = $(shell pkg-config --static --libs $(SHARED_LIBS))
+
 all: test creds-unsealer creds-unsealer.1
 
 creds-unsealer: creds-unsealer.go $(DEPS)
+	CGO_CFLAGS="$(CGO_CFLAGS)" CGO_LDFLAGS="$(CGO_LDFLAGS)" \
 	CGO_ENABLED=1 GOOS=linux \
 	  go build -a \
-		  -ldflags='-X main.version=$(VERSION)' \
+		  -ldflags='-linkmode external -extldflags -static -X main.version=$(VERSION)' \
 	    -installsuffix cgo -o $@ $<
 	strip $@
 
