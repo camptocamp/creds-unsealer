@@ -54,6 +54,15 @@ func List(cfg *config.Config) (providers []Provider, err error) {
 					outputKeyPrefix: cfg.OutputKeyPrefix,
 				},
 			}
+		case "openstack":
+			p = &Openstack{
+				BaseProvider: &BaseProvider{
+					backend:         backend,
+					inputPath:       cfg.Openstack.InputPath,
+					outputPath:      os.ExpandEnv("$HOME/.config/openstack/clouds.yaml"),
+					outputKeyPrefix: cfg.OutputKeyPrefix,
+				},
+			}
 		}
 		providers = append(providers, p)
 	}

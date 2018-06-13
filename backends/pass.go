@@ -58,9 +58,10 @@ func (p *Pass) ListSecrets(inputPath string) (secrets []string, err error) {
 
 	l := t.List(1)
 	for _, secret := range l {
-		s := strings.Split(secret, "/")
-		log.Debugf("Found secret '%s'", string(s[1]))
-		secrets = append(secrets, string(s[1]))
+		s := strings.TrimPrefix(secret, t.String())
+		s = strings.TrimPrefix(s, "/")
+		log.Debugf("Found secret '%s'", s)
+		secrets = append(secrets, s)
 	}
 	return
 }

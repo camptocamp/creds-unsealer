@@ -27,11 +27,12 @@ type Config struct {
 	OVH struct {
 		InputPath string `long:"provider-ovh-input-path" description:"OVH Provider input path" default:"ovh"`
 	} `group:"OVH Provider options"`
-
-	// Providers configuration
 	AWS struct {
 		InputPath string `long:"provider-aws-input-path" description:"AWS Provider input path" default:"aws"`
 	} `group:"AWS Provider options"`
+	Openstack struct {
+		InputPath string `long:"provider-openstack-input-path" description:"Openstack Provider input path" default:"openstack"`
+	} `group:"Openstack Provider options"`
 }
 
 // LoadConfig loads the config from flags & environment
