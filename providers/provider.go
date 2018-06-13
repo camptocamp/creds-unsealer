@@ -41,7 +41,7 @@ func List(cfg *config.Config) (providers []Provider, err error) {
 				BaseProvider: &BaseProvider{
 					backend:         backend,
 					inputPath:       cfg.OVH.InputPath,
-					outputPath:      os.ExpandEnv("$HOME/.ovh.conf"),
+					outputPath:      os.ExpandEnv(cfg.OutputPathBaseDir + "/.ovh.conf"),
 					outputKeyPrefix: cfg.OutputKeyPrefix,
 				},
 			}
@@ -50,7 +50,7 @@ func List(cfg *config.Config) (providers []Provider, err error) {
 				BaseProvider: &BaseProvider{
 					backend:         backend,
 					inputPath:       cfg.AWS.InputPath,
-					outputPath:      os.ExpandEnv("$HOME/.aws/credentials"),
+					outputPath:      os.ExpandEnv(cfg.OutputPathBaseDir + "/.aws/credentials"),
 					outputKeyPrefix: cfg.OutputKeyPrefix,
 				},
 			}
@@ -59,7 +59,7 @@ func List(cfg *config.Config) (providers []Provider, err error) {
 				BaseProvider: &BaseProvider{
 					backend:         backend,
 					inputPath:       cfg.Openstack.InputPath,
-					outputPath:      os.ExpandEnv("$HOME/.config/openstack/clouds.yaml"),
+					outputPath:      os.ExpandEnv(cfg.OutputPathBaseDir + "/.config/openstack/clouds.yaml"),
 					outputKeyPrefix: cfg.OutputKeyPrefix,
 				},
 			}
