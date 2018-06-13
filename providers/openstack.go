@@ -77,7 +77,9 @@ func (o *Openstack) writeSecret(name string, config OpenstackConfig) (err error)
 		return fmt.Errorf("failed to read config file: %s", err)
 	}
 
-	var t *OpenstackClouds
+	t := &OpenstackClouds{
+		Clouds: make(map[string]*OpenstackConfig),
+	}
 	err = yaml.Unmarshal([]byte(data), &t)
 	if err != nil {
 		log.Fatalf("error: %v", err)
