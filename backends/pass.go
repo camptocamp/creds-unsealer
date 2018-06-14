@@ -45,7 +45,7 @@ func (p *Pass) ListSecrets(inputPath string) (secrets []string, err error) {
 
 	log.WithFields(log.Fields{
 		"backend": p.GetName(),
-	}).Debugf("Using path: %s", act.Store.Path())
+	}).Debugf("Using path: %s", act.Store.Path()+"/"+inputPath)
 
 	rootTree, err := act.Store.Tree(context.Background())
 	if err != nil {
