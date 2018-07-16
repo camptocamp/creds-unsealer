@@ -1,3 +1,9 @@
+## 0.3.1 (July 16, 2018)
+
+IMPROVEMENTS:
+
+- Build binary statically.
+
 ## 0.3.0 (June 13, 2018)
 
 IMPROVEMENTS:
