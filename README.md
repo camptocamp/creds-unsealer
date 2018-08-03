@@ -46,4 +46,4 @@ Providers
 ### OVH
 
 Default input path: `ovh`
-DEfault output file: `~/.ovh.conf`
+Default output file: `~/.ovh.conf`
