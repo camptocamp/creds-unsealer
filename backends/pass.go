@@ -56,7 +56,7 @@ func (p *Pass) ListSecrets(inputPath string) (secrets []string, err error) {
 		return nil, fmt.Errorf("failed to retrieve gopass tree: %s", err)
 	}
 
-	l := t.List(1)
+	l := t.List(0)
 	for _, secret := range l {
 		s := strings.TrimPrefix(secret, t.String())
 		s = strings.TrimPrefix(s, "/")
