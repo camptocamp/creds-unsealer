@@ -1,3 +1,9 @@
+## 0.4.0 (August 31, 2018)
+
+IMPROVEMENTS:
+
+- Add `file` provider.
+
 ## 0.3.1 (July 16, 2018)
 
 IMPROVEMENTS:
