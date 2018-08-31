@@ -63,6 +63,13 @@ func List(cfg *config.Config) (providers []Provider, err error) {
 					outputKeyPrefix: cfg.OutputKeyPrefix,
 				},
 			}
+		case "file":
+			p = &File{
+				BaseProvider: &BaseProvider{
+					backend:   backend,
+					inputPath: cfg.File.InputPath,
+				},
+			}
 		}
 		providers = append(providers, p)
 	}
