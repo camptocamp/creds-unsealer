@@ -47,3 +47,18 @@ Providers
 
 Default input path: `ovh`
 Default output file: `~/.ovh.conf`
+
+### AWS
+
+Default input path: `aws`
+Default output file: `~/.aws/credentials`
+
+### Openstack
+
+Default input path: `openstack`
+Default output file: `~/.config/openstack/clouds.yaml`
+
+
+### File
+
+Default input path: `files`
